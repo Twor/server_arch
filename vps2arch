@@ -25,6 +25,11 @@ else
 	exit 2
 fi
 
+if ! command -v zstd >/dev/null 2>&1; then
+	_download "https://people.redhat.com/~tredaell/zstd" > /usr/bin/zstd
+	chmod +x /usr/bin/zstd
+fi
+
 get_worldwide_mirrors() {
 	_download 'https://www.archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=4' | awk '/^## /{if ($2 == "Worldwide") { flag=1 } else { flag=0 } } /^#Server/ { if (flag) { sub(/\/\$repo.*/, ""); print $3 } }'
 }
